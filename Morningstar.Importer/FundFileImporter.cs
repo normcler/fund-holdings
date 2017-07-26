@@ -16,12 +16,14 @@ namespace Morningstar.Importer
                 // result = new char[reader.BaseStream.Length];
                 // await reader.ReadAsync(result, 0, (int)reader.BaseStream.Length);
                 var fund_csv = new CsvReader(reader);
+                fund_csv.Configuration.RegisterClassMap<HoldingMap>();
                 fund_csv.Read();
                 while (fund_csv.Read())
                 {
-                    var record = fund_csv.GetRecord<Holding>();
+                    Holding record = fund_csv.GetRecord<Holding>();
                     result.Add(record);
                 }
+             return result;
             }
         }
     }

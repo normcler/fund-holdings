@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.26430.15
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fund-holdings", "fund-holdings\fund-holdings.csproj", "{26D745F0-4A80-434A-8D55-1639336E64AA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Morningstar.Importer", "Morningstar.Importer\Morningstar.Importer.csproj", "{48BB554B-48AE-4FF2-A354-ED35F1CF1745}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Morningstar.Importer", "Morningstar.Importer\Morningstar.Importer.csproj", "{3EA80B10-26A9-4F5C-940F-546F74EAEDA2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{26D745F0-4A80-434A-8D55-1639336E64AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{26D745F0-4A80-434A-8D55-1639336E64AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{26D745F0-4A80-434A-8D55-1639336E64AA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{48BB554B-48AE-4FF2-A354-ED35F1CF1745}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{48BB554B-48AE-4FF2-A354-ED35F1CF1745}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{48BB554B-48AE-4FF2-A354-ED35F1CF1745}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{48BB554B-48AE-4FF2-A354-ED35F1CF1745}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3EA80B10-26A9-4F5C-940F-546F74EAEDA2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EA80B10-26A9-4F5C-940F-546F74EAEDA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3EA80B10-26A9-4F5C-940F-546F74EAEDA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3EA80B10-26A9-4F5C-940F-546F74EAEDA2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

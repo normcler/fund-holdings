@@ -58,7 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Morningstar.Importer\Morningstar.Importer.csproj">
-      <Project>{48bb554b-48ae-4ff2-a354-ed35f1cf1745}</Project>
+      <Project>{3ea80b10-26a9-4f5c-940f-546f74eaeda2}</Project>
       <Name>Morningstar.Importer</Name>
     </ProjectReference>
   </ItemGroup>
