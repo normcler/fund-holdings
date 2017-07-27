@@ -18,7 +18,6 @@ namespace Morningstar.Importer
     /// </remarks>
     public class HoldingMap : CsvClassMap<Holding>
     {
-        protected static string lastField;
         protected static DateTime noDate = new DateTime(1000, 1, 1);
         public HoldingMap()
         {
@@ -98,6 +97,12 @@ namespace Morningstar.Importer
         /// Parse a decimal field. 
         /// </summary>
         /// <param name="fieldValue">The field</param>
+        /// <param name="splitChar">If present, the character to use to split the
+        /// string.</param>
+        /// <param name="firstValue">If not present or true, use the left element
+        /// of the split string</param>
+        /// <param name="removeStr">If present, a character to be removed from
+        /// the string</param>
         /// <returns>Return 0.0M if empty; otherwise the value</returns>
         /// <remarks>
         /// Programmer: N. S. Clerman
@@ -128,7 +133,6 @@ namespace Morningstar.Importer
             {
                 result = IsDash(fieldValue) ? (decimal?)null :
                     Decimal.Parse(fieldValue);
-                lastField = fullField;
             }
             else
             {
@@ -137,42 +141,6 @@ namespace Morningstar.Importer
             return result;
         }
 
-        /// <summary>
-        /// Parse a decimal field that is the first number in a decimal-percent
-        /// pair.
-        /// </summary>
-        /// <param name="fieldValue">The field</param>
-        /// <returns>Return 0.0M if empty; otherwise the value</returns>
-        /// <remarks>
-        /// Programmer: N. S. Clerman
-        /// 
-        /// Notes: The field is a string containing the day change. Two values
-        /// are separated by a vertical bar (|). The first is the change in 
-        /// price; the second is the percentage change. Ex: "-1.52|-0.46%"
-        /// </remarks>
-        public static decimal? ConvertDecimalPair(string fieldValue)
-        {
-            decimal? result = IsDash(fieldValue) ? 0.0M : ConvertDecimal(fieldValue.Split('|')[0]);
-            return result;
-        }
-
-        /// <summary>
-        /// Parse the first first number in a high-low pair.
-        /// </summary>
-        /// <param name="fieldValue">The field</param>
-        /// <returns>Return 0.0M if empty; otherwise the value</returns>
-        /// <remarks>
-        /// Programmer: N. S. Clerman
-        /// 
-        /// Notes: The field is a string containing the high and low values. 
-        /// Two values are separated by a vertical bar (|). Ex: "386.99-178.19"
-        /// </remarks>
-        public static decimal ConvertHighPair(string fieldValue)
-        {
-            decimal result = IsDash(fieldValue) ? 0.0M :
-                Decimal.Parse(fieldValue.Split('-')[1]);
-            return result;
-        }
 
         /// <summary>
         /// Parse an integer field.
@@ -185,45 +153,6 @@ namespace Morningstar.Importer
         public static int ConvertInt(string fieldValue)
         {
             int result = IsDash(fieldValue) ? 0 : Int32.Parse(fieldValue);
-            return result;
-        }
-
-        /// <summary>
-        /// Parse the second number in a high-low pair.
-        /// </summary>
-        /// <param name="fieldValue">The field</param>
-        /// <returns>Return 0.0M if empty; otherwise the value</returns>
-        /// <remarks>
-        /// Programmer: N. S. Clerman
-        /// 
-        /// Notes: The field is a string containing the high and low values. 
-        /// Two values are separated by a vertical bar (|). Ex: "386.99-178.19"
-        /// </remarks>
-        public static decimal ConvertLowPair(string fieldValue)
-        {
-            decimal result = IsDash(fieldValue) ? 0.0M :
-                Decimal.Parse(fieldValue.Split('-')[1]);
-            return result;
-        }
-
-        /// <summary>
-        /// Parse a percent field that is the second number in a decimal-percent
-        /// pair.
-        /// </summary>
-        /// <param name="fieldValue">The field</param>
-        /// <returns>Return 0.0M if empty; otherwise the value</returns>
-        /// <remarks>
-        /// Programmer: N. S. Clerman
-        /// 
-        /// Notes: The field is a string containing the day change. Two values
-        /// are separated by a vertical bar (|). The first is the change in 
-        /// price; the second is the percentage change. Ex: "-1.52|-0.46%"
-        /// </remarks>
-        public static decimal ConvertPercentPair(string fieldValue)
-        {
-            decimal result = IsDash(fieldValue) ? 0.0M :
-                Decimal.Parse(fieldValue.Split('|')[1].
-                Replace("%", String.Empty));
             return result;
         }
 
