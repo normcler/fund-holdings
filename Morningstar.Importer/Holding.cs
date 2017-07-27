@@ -22,13 +22,16 @@ namespace Morningstar.Importer
         // day change is a string containing the change in currency and in
         // percentage, separated by a vertical bar, |. The percentage includes
         // the percent symbol, %.
-        public string DayChange { get; set; }
+        public decimal DayChangeValue { get; set; }
+        public decimal DayChangePercent { get; set; }
         // high low is a pair of floating point numbers separated by a hyphen
         // (dash), -.
-        public string HighLowDay { get; set; }
+        public string HighDay { get; set; }
+        public string LowDay { get; set; }
         public int? Volume { get; set; }
         // same as highLowDay
-        public string HighLow52week { get; set; }
+        public string High52week { get; set; }
+        public string Low52week { get; set; }
         public string Country { get; set; }
         public decimal? Return3month { get; set; }
         public decimal? Return1year { get; set; }
@@ -50,7 +53,8 @@ namespace Morningstar.Importer
             WriteLine($"Weighting: {this.Weighting}");
             WriteLine($"First Bought: {this.FirstBought}");
             WriteLine($"Shares Owned: {this.SharesOwned}");
-            WriteLine($"Day high/low: {this.HighLowDay}");
+            WriteLine($"Day High: {this.HighDay}");
+            WriteLine($"Day Low: {this.LowDay}");
         }
     }
 
