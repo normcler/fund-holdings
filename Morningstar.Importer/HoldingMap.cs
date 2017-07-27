@@ -18,6 +18,7 @@ namespace Morningstar.Importer
     /// </remarks>
     public class HoldingMap : CsvClassMap<Holding>
     {
+        protected static string lastField;
         protected static DateTime noDate = new DateTime(1000, 1, 1);
         public HoldingMap()
         {
@@ -41,26 +42,26 @@ namespace Morningstar.Importer
             Map(m => m.Price).Index(10).
                 ConvertUsing(s => ConvertDecimal(s[10]));
             Map(m => m.DayChangeValue).Index(11).
-                ConvertUsing(s => ConvertDecimalPair(s[11]));
+                ConvertUsing(s => ConvertDecimal(s[11], '|', true));
             Map(m => m.DayChangePercent).Index(11).
-                ConvertUsing(s => ConvertPercentPair(s[11]));
+                ConvertUsing(s => ConvertDecimal(s[11], '|', false, "%"));
             Map(m => m.HighDay).Index(12).
-                ConvertUsing(s => ConvertHighPair(s[12]));
+                ConvertUsing(s => ConvertDecimal(s[12], '-', true));
             Map(m => m.LowDay).Index(12).
-                ConvertUsing(s => ConvertLowPair(s[12]));
+                ConvertUsing(s => ConvertDecimal(s[12], '-', false));
             Map(m => m.Volume).Index(13).
                 ConvertUsing(s => ConvertInt(s[13]));
             Map(m => m.High52week).Index(14).
-                ConvertUsing(s => ConvertHighPair(s[14]));
+                ConvertUsing(s => ConvertDecimal(s[14], '-', true));
             Map(m => m.Low52week).Index(14).
-                ConvertUsing(s => ConvertLowPair(s[14]));
+                ConvertUsing(s => ConvertDecimal(s[14], '-', false));
             Map(m => m.Country).Index(15);
             Map(m => m.Return3month).Index(16).
                 ConvertUsing(s => ConvertDecimal(s[16]));
             Map(m => m.Return1year).Index(17).
                 ConvertUsing(s => ConvertDecimal(s[17]));
             Map(m => m.Return3year).Index(18).
-                ConvertUsing(s => ConvertDecimal(s[18));
+                ConvertUsing(s => ConvertDecimal(s[18]));
             Map(m => m.Return5year).Index(19).
                 ConvertUsing(s => ConvertDecimal(s[19]));
             Map(m => m.MarketCapMil).Index(20).
@@ -101,9 +102,38 @@ namespace Morningstar.Importer
         /// <remarks>
         /// Programmer: N. S. Clerman
         /// </remarks>
-        public static decimal ConvertDecimal(string fieldValue)
+        public static decimal? ConvertDecimal(string fieldValue,
+            char? splitChar = null, bool? firstValue = null, 
+            string removeStr = null)
         {
-            decimal result = IsDash(fieldValue) ? 0.0M : Decimal.Parse(fieldValue);
+            string fullField = fieldValue;
+            if (removeStr != null)
+            {
+                fieldValue = fieldValue.Replace(removeStr, String.Empty);
+            }
+            if (splitChar != null)
+            {
+                if (firstValue == null || firstValue == true)
+                {
+                    fieldValue = fieldValue.Split(splitChar.Value).First();
+                }
+                else
+                {
+                    fieldValue = fieldValue.Split(splitChar.Value).Last();
+                }
+                
+            }
+            decimal? result;
+            if (fieldValue != String.Empty)
+            {
+                result = IsDash(fieldValue) ? (decimal?)null :
+                    Decimal.Parse(fieldValue);
+                lastField = fullField;
+            }
+            else
+            {
+                result = (decimal?)null;
+            }
             return result;
         }
 
@@ -120,17 +150,9 @@ namespace Morningstar.Importer
         /// are separated by a vertical bar (|). The first is the change in 
         /// price; the second is the percentage change. Ex: "-1.52|-0.46%"
         /// </remarks>
-        public static decimal ConvertDecimalPair(string fieldValue)
+        public static decimal? ConvertDecimalPair(string fieldValue)
         {
-            decimal result;
-            if (IsDash(fieldValue))
-            {
-                result = 0.0M;
-            }
-            else
-            {
-                result = Decimal.Parse(fieldValue.Split('|')[0]);
-            }
+            decimal? result = IsDash(fieldValue) ? 0.0M : ConvertDecimal(fieldValue.Split('|')[0]);
             return result;
         }
 
@@ -147,15 +169,8 @@ namespace Morningstar.Importer
         /// </remarks>
         public static decimal ConvertHighPair(string fieldValue)
         {
-            decimal result;
-            if (IsDash(fieldValue))
-            {
-                result = 0.0M;
-            }
-            else
-            {
-                result = Decimal.Parse(fieldValue.Split('-')[1]);
-            }
+            decimal result = IsDash(fieldValue) ? 0.0M :
+                Decimal.Parse(fieldValue.Split('-')[1]);
             return result;
         }
 
@@ -186,15 +201,8 @@ namespace Morningstar.Importer
         /// </remarks>
         public static decimal ConvertLowPair(string fieldValue)
         {
-            decimal result;
-            if (IsDash(fieldValue))
-            {
-                result = 0.0M;
-            }
-            else
-            {
-                result = Decimal.Parse(fieldValue.Split('-')[1]);
-            }
+            decimal result = IsDash(fieldValue) ? 0.0M :
+                Decimal.Parse(fieldValue.Split('-')[1]);
             return result;
         }
 
@@ -213,16 +221,9 @@ namespace Morningstar.Importer
         /// </remarks>
         public static decimal ConvertPercentPair(string fieldValue)
         {
-            decimal result;
-            if (IsDash(fieldValue))
-            {
-                result = 0.0M;
-            }
-            else
-            {
-                result = Decimal.Parse(fieldValue.Split('|')[1].
-                    Replace("%", String.Empty));
-            }
+            decimal result = IsDash(fieldValue) ? 0.0M :
+                Decimal.Parse(fieldValue.Split('|')[1].
+                Replace("%", String.Empty));
             return result;
         }
 

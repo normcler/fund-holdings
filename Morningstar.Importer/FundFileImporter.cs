@@ -17,7 +17,7 @@ namespace Morningstar.Importer
                 // await reader.ReadAsync(result, 0, (int)reader.BaseStream.Length);
                 var fund_csv = new CsvReader(reader);
                 fund_csv.Configuration.RegisterClassMap<HoldingMap>();
-                fund_csv.Read();
+                fund_csv.Configuration.HasHeaderRecord = true;
                 while (fund_csv.Read())
                 {
                     Holding record = fund_csv.GetRecord<Holding>();

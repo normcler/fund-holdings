@@ -19,8 +19,8 @@ namespace fund_holdings
 
             List<Holding> holdingList = Morningstar.Importer.FundFileImporter.
                 Import(FILE_REPO + "Holdings_FSEVX.csv");
-            Holding record_1 = holdingList[1];
-            record_1.PrintHoldingData();
+            Holding record_0 = holdingList[0];
+            record_0.PrintHoldingData();
             
         }
     }

@@ -6,6 +6,12 @@ namespace Morningstar.Importer
     /// <summary>
     /// A class containing one mutual fund holding.
     /// </summary>
+    /// <remarks>
+    /// Programmer: N. S. Clerman
+    /// 
+    /// Note: All numeric and DateTime values are nullable. This is their
+    ///       state if they are not present in the file.
+    /// </remarks>
     public class Holding
     {
         public string Name { get; set; }
@@ -22,16 +28,16 @@ namespace Morningstar.Importer
         // day change is a string containing the change in currency and in
         // percentage, separated by a vertical bar, |. The percentage includes
         // the percent symbol, %.
-        public decimal DayChangeValue { get; set; }
-        public decimal DayChangePercent { get; set; }
+        public decimal? DayChangeValue { get; set; }
+        public decimal? DayChangePercent { get; set; }
         // high low is a pair of floating point numbers separated by a hyphen
         // (dash), -.
-        public string HighDay { get; set; }
-        public string LowDay { get; set; }
+        public decimal? HighDay { get; set; }
+        public decimal? LowDay { get; set; }
         public int? Volume { get; set; }
         // same as highLowDay
-        public string High52week { get; set; }
-        public string Low52week { get; set; }
+        public decimal? High52week { get; set; }
+        public decimal? Low52week { get; set; }
         public string Country { get; set; }
         public decimal? Return3month { get; set; }
         public decimal? Return1year { get; set; }
@@ -55,6 +61,7 @@ namespace Morningstar.Importer
             WriteLine($"Shares Owned: {this.SharesOwned}");
             WriteLine($"Day High: {this.HighDay}");
             WriteLine($"Day Low: {this.LowDay}");
+            ReadLine();
         }
     }
 
