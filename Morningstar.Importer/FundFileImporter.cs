@@ -10,21 +10,35 @@ namespace Morningstar.Importer
     public class FundFileImporter
     {
         /// <summary>
-        /// Purpose: Import fund data from a csv file from Morningstar
+        ///     Purpose: Import fund data from a csv file from Morningstar
         /// </summary>
-        /// <param name="fileName">The name of the file.</param>
-        /// <returns>A List of class Holding</returns>
+        /// <param name="repoLocation">
+        ///     The location of the fund file repository.
+        /// </param>
+        /// <param name="ticker">
+        ///     The name of the file.
+        /// </param>
+        /// <returns>
+        ///     A List of class Holding
+        /// </returns>
         /// <remarks>
-        /// Programmer: N. S. Clerman
+        ///     Programmer: N. S. Clerman
         /// 
-        /// Revisions:
-        /// 1) N. S. Clerman, 28-Jul-2017: Read the file in with a single
-        ///    operation.
+        ///     Revisions:
+        ///     1)  N. S. Clerman, 28-Jul-2017: Read the file in with a single
+        ///         operation.
+        ///     2)  N. S. Clerman, 29-Jul-2017: Employ a method to form the file
+        ///         name.
         /// </remarks>
-        public static List<Holding> Import (string fileName)
+        public static List<Holding> Import (string repoLocation, string ticker)
         {
+            // return variable
             List<Holding> result = new List<Holding>();
-            using (StreamReader reader = File.OpenText(fileName))
+
+            // get the fully-qualified file name.
+            string filename = fullyQualifiedFileName(repoLocation, ticker);
+
+            using (StreamReader reader = File.OpenText(filename))
             {
                 var fund_csv = new CsvReader(reader);
                 fund_csv.Configuration.RegisterClassMap<HoldingMap>();
@@ -40,6 +54,34 @@ namespace Morningstar.Importer
                 result = fund_csv.GetRecords<Holding>().ToList();
                 return result;
             }
+        }
+
+        /// <summary>
+        ///     Purpose: Form the fully-qualified filename for the Morningstar
+        ///              fund file
+        /// </summary>
+        /// <param name="repoLocation">
+        ///     The location of the file repository
+        /// </param>
+        /// <param name="ticker">
+        ///     The fund ticker
+        /// </param>
+        /// <returns name="fileName">
+        ///     The fully-qualified name
+        /// </returns>
+        /// <remarks>
+        ///     Programmer: N. S. Clerman
+        /// </remarks>
+        private static string fullyQualifiedFileName(string repoLocation,
+            string ticker)
+        {
+
+            const string MORNINGSTAR_FILE_PREFIX = "Holdings_";
+            const string CSV_FILE_EXTENT = ".csv";
+
+            string fileName = repoLocation + MORNINGSTAR_FILE_PREFIX + ticker +
+                CSV_FILE_EXTENT;
+            return fileName;
         }
     }
 }

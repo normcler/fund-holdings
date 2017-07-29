@@ -9,11 +9,31 @@ namespace fund_holdings
 {
 
     /// <summary>
-    /// A class containing a Dictionary of funds. The dictionary key is the
-    /// symbol; the value is the list of its holdings (class Holding).
+    ///     A class containing a Dictionary of funds. The dictionary key is the
+    ///     symbol; the value is the list of its holdings (class Holding).
     /// </summary>
     class Portfolio
     {
-        Dictionary<string, List<Holding>> fund { get; set; }
+        // the fund dictionary holds the fund ticker and the holdings list of
+        // the fund
+        Dictionary<string, List<Holding>> fundDictionary { get; set; }
+
+        public Portfolio (List<string> tickerList)
+        {
+            const string FILE_REPO = @"\Users\norm\Dropbox\" +
+            @"windows-manitowoc\Source\Repos\fund-holdings\fund-holdings\" +
+            @"file_repo\";
+
+            Dictionary<string, List<Holding>> tempDict = new Dictionary<string,
+                List<Holding>>();
+
+            foreach (string ticker in tickerList)
+            {
+                List<Holding> holdingList = Morningstar.Importer.FundFileImporter.
+                    Import(FILE_REPO, ticker);
+                tempDict[ticker] = holdingList;
+            }
+            fundDictionary = tempDict;
+        }
     }
 }
