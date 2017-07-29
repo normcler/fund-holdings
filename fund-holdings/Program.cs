@@ -21,7 +21,6 @@ namespace fund_holdings
                 Import(FILE_REPO + "Holdings_FSEVX.csv");
             Holding record_0 = holdingList[0];
             record_0.PrintHoldingData();
-            
         }
     }
 }
