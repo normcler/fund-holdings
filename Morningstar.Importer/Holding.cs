@@ -56,6 +56,7 @@ namespace Morningstar.Importer
         {
             WriteLine($"Name: {this.Name}");
             WriteLine($"Ticker: {this.Ticker}");
+            WriteLine($"Ticker: {this.Type}");
             WriteLine($"Weighting: {this.Weighting}");
             WriteLine($"First Bought: {this.FirstBought}");
             WriteLine($"Shares Owned: {this.SharesOwned}");

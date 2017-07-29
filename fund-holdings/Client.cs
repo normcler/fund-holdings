@@ -20,6 +20,10 @@ namespace fund_holdings
         {
             List<string> tickerList = getFundTickerList();
             this.fundPortfolio = new Portfolio(tickerList);
+
+            // test obtaining the value of a particular field by heading name.
+            this.fundPortfolio.PrintRecord_0("FSEVX");
+            this.fundPortfolio.PrintRecord_0("VTMSX");
         }
 
         /// <summary>

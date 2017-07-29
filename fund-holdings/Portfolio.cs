@@ -35,5 +35,12 @@ namespace fund_holdings
             }
             fundDictionary = tempDict;
         }
+
+        public void PrintRecord_0(string fundTicker)
+        {
+            List<Holding> holdingList = this.fundDictionary[fundTicker];
+            Holding record_0 = holdingList[0];
+            record_0.PrintHoldingData();
+        }
     }
 }
