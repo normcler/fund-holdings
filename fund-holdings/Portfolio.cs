@@ -1,4 +1,5 @@
 ﻿using System;
+using static System.Console;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -29,11 +30,43 @@ namespace fund_holdings
 
             foreach (string ticker in tickerList)
             {
-                List<Holding> holdingList = Morningstar.Importer.FundFileImporter.
+                List<Holding> rawList = Morningstar.Importer.FundFileImporter.
                     Import(FILE_REPO, ticker);
-                tempDict[ticker] = holdingList;
+                List<Holding> equityList = rawList.Where(x => x.IsEquityHolding()).ToList();
+                tempDict[ticker] = equityList;
             }
             fundDictionary = tempDict;
+        }
+
+        public void FindCommonHoldings(string fundTicker_1, string fundTicker_2)
+        {
+            if ((fundTicker_1 != fundTicker_2) &&
+                (fundDictionary.Count > 0) &&
+                fundDictionary.ContainsKey(fundTicker_1) &&
+                fundDictionary.ContainsKey(fundTicker_2))
+            {
+                List<Holding> hList_1 = fundDictionary[fundTicker_1];
+                List<Holding> hList_2 = fundDictionary[fundTicker_2];
+                int knt = 0;
+                int kntCommon = 0;
+                foreach (Holding h_1 in hList_1)
+                {
+                    WriteLine($"Searching funds {fundTicker_1} and " +
+                        $"{fundTicker_2} for common holdings.");
+                    knt++;
+                    WriteLine($"{knt}: Searching for " + $"{h_1.Ticker}");
+                    foreach (Holding h_2 in hList_2)
+                    {
+                        if (h_1 == h_2)
+                        {
+                            kntCommon++;
+                            WriteLine($"{h_1.Ticker} is also in {fundTicker_2}");
+                        }
+                    }
+                }
+                WriteLine($"Found {kntCommon} common holdings.");
+                ReadLine();
+            }
         }
 
         public void PrintRecord_0(string fundTicker)

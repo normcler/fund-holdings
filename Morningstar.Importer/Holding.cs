@@ -12,7 +12,7 @@ namespace Morningstar.Importer
     /// Note: All numeric and DateTime values are nullable. This is their
     ///       state if they are not present in the file.
     /// </remarks>
-    public class Holding
+    public class Holding : IEquatable<Holding>
     {
         public string Name { get; set; }
         public decimal? Weighting { get; set; }
@@ -63,6 +63,99 @@ namespace Morningstar.Importer
             WriteLine($"Day High: {this.HighDay}");
             WriteLine($"Day Low: {this.LowDay}");
             ReadLine();
+        }
+
+        /// <summary>
+        ///     Purpose: Create operators == and !=
+        /// </summary>
+        /// <param name="h_1">
+        ///     h1: the first holding
+        /// </param>
+        /// <param name="h_2">
+        ///     h2: the second holding
+        /// </param>
+        /// <returns>
+        ///     true if the holding Tickers are the identical.
+        /// </returns>
+        public static bool operator == (Holding h_1, Holding h_2)
+        {
+            if (System.Object.ReferenceEquals(h_1, h_2))
+            {
+                return true;
+            }
+            if ((object)h_1 == null || (object)h_2 == null)
+            {
+                return false;
+            }
+            return h_1.Ticker.ToUpper().Trim() == h_2.Ticker.ToUpper().Trim();
+        }
+
+        public static bool operator !=(Holding h_1, Holding h_2)
+        {
+            return !(h_1 == h_2);
+        }
+
+        /// <summary>
+        ///     Purpose: The method required to make class Holding IEquatable
+        /// </summary>
+        /// <param name="targetHolding">
+        ///     targetHolding: Comparison holding.
+        /// </param>
+        /// <returns>
+        ///     result: true if the Ticker field for both are identical.
+        /// </returns>
+        /// <remarks>
+        ///     Programmer: N. S. Clerman, 29-Jul-2017
+        /// </remarks>
+
+        public override bool Equals(System.Object obj)
+        {
+            if (obj == null)
+            {
+                return false;
+            }
+            Holding h = obj as Holding;
+            if ((System.Object)h == null)
+            {
+                return false;
+            }
+            return HaveSameTicker(h);
+        }
+
+        public bool Equals(Holding targetHolding)
+        {
+            if ((object)targetHolding == null)
+            {
+                return false;
+            }
+            return HaveSameTicker(targetHolding);
+        }
+
+        private bool HaveSameTicker(Holding targetHolding)
+        {
+            return this.Ticker.ToUpper().Trim() ==
+                targetHolding.Ticker.ToUpper().Trim();
+        }
+
+        /// <summary>
+        ///     Purpose: return a bool indicating if the type of the holding is
+        ///     "EQUITY".
+        /// </summary>
+        /// <returns>
+        ///     result: true if the holding type is "EQUITY"
+        /// </returns>
+        /// <remarks>
+        ///     Programmer: N. S. Clerman, 29-Jul-2017
+        /// </remarks>
+        public bool IsEquityHolding()
+        {
+            bool result;
+            result = this.Type.ToUpper() == "EQUITY";
+            if (!result)
+            {
+                WriteLine($"Holding {this.Name} is not an equity holding.");
+            }
+            return result;
         }
     }
 

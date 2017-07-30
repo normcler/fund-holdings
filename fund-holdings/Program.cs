@@ -17,6 +17,7 @@ namespace fund_holdings
         public static void Main(string[] args)
         {
             Client testClient = new Client();
+            testClient.fundPortfolio.FindCommonHoldings("FSEVX", "VTMSX");
             /*
             List<Holding> holdingList = Morningstar.Importer.FundFileImporter.
                 Import(FILE_REPO + "Holdings_FSEVX.csv");
