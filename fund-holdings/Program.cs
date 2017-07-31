@@ -14,16 +14,35 @@ namespace fund_holdings
             @"windows-manitowoc\Source\Repos\fund-holdings\fund-holdings\" +
             @"file_repo\";
 
+        /// <summary>
+        ///     Purpose: Main program to test methods.
+        /// </summary>
+        /// <remarks>
+        ///     Programmer: N. S. Clerman
+        ///     
+        ///     Revisions
+        ///     =========
+        ///     1) N. S. Clerman, 31-Jul-2017: Compare every fund to all other
+        ///        funds.
+        /// </remarks>
+        /// <param name="args">
+        ///     args
+        /// </param>
         public static void Main(string[] args)
         {
             Client testClient = new Client();
-            testClient.fundPortfolio.FindCommonHoldings("FSEVX", "VTMSX");
-            /*
-            List<Holding> holdingList = Morningstar.Importer.FundFileImporter.
-                Import(FILE_REPO + "Holdings_FSEVX.csv");
-            Holding record_0 = holdingList[0];
-            record_0.PrintHoldingData();
-            */
+            List<string> clientFunds = testClient.getFundTickerList();
+            int numberOfFunds = clientFunds.Count();
+            for (int kntOuter = 0; kntOuter < numberOfFunds; kntOuter++)
+            {
+                for (int kntInner = kntOuter+1; kntInner < numberOfFunds;
+                    kntInner++)
+                {
+                    testClient.fundPortfolio.
+                        FindCommonHoldings(clientFunds[kntOuter],
+                        clientFunds[kntInner]);
+                }
+            }
         }
     }
 }

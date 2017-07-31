@@ -38,6 +38,18 @@ namespace fund_holdings
             fundDictionary = tempDict;
         }
 
+        /// <summary>
+        ///     Purpose: Find the common holdings in two funds in the portfolio.
+        /// </summary>
+        /// <param name="fundTicker_1">
+        ///     fundTicker_1: The ticker for the first funds
+        /// </param>
+        /// <param name="fundTicker_2">
+        ///     fundTicker_2: The ticker for the second fund
+        /// </param>
+        /// <remarks>
+        ///     Programmer: N. S. Clerman, 29-Jul-2017
+        /// </remarks>
         public void FindCommonHoldings(string fundTicker_1, string fundTicker_2)
         {
             if ((fundTicker_1 != fundTicker_2) &&
@@ -45,27 +57,41 @@ namespace fund_holdings
                 fundDictionary.ContainsKey(fundTicker_1) &&
                 fundDictionary.ContainsKey(fundTicker_2))
             {
+                WriteLine($"Searching funds {fundTicker_1} and " +
+                    $"{fundTicker_2} for common holdings.");
+
                 List<Holding> hList_1 = fundDictionary[fundTicker_1];
                 List<Holding> hList_2 = fundDictionary[fundTicker_2];
+                List<string> commonHoldings = new List<string>();
                 int knt = 0;
                 int kntCommon = 0;
                 foreach (Holding h_1 in hList_1)
                 {
-                    WriteLine($"Searching funds {fundTicker_1} and " +
-                        $"{fundTicker_2} for common holdings.");
                     knt++;
-                    WriteLine($"{knt}: Searching for " + $"{h_1.Ticker}");
+                    // WriteLine($"{knt}: Searching for " + $"{h_1.Ticker}");
                     foreach (Holding h_2 in hList_2)
                     {
                         if (h_1 == h_2)
                         {
+                            commonHoldings.Add(h_1.Ticker);
                             kntCommon++;
-                            WriteLine($"{h_1.Ticker} is also in {fundTicker_2}");
+                            //WriteLine($"{h_1.Ticker} is also in {fundTicker_2}");
                         }
                     }
                 }
                 WriteLine($"Found {kntCommon} common holdings.");
-                ReadLine();
+                if (kntCommon > 0)
+                {
+                    for (int iCnt = 0; iCnt < commonHoldings.Count(); iCnt++)
+                    {
+                        WriteLine($"{iCnt}) {commonHoldings[iCnt]}");
+                    }
+                    ReadLine();
+                }
+                else
+                {
+                    WriteLine();
+                }
             }
         }
 

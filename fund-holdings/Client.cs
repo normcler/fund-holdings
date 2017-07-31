@@ -42,7 +42,8 @@ namespace fund_holdings
 
         public List<string> getFundTickerList()
         {
-            string[] testList = { "FSEVX", "VTMSX"};
+            string[] testList = { "FSEVX", "VTMSX", "FPMAX", "PRASX", "PRHSX",
+            "PRITX", "PRNHX", "VEMAX", "VEUSX", "VFSVX", "VPADX", "VTRIX"};
             List<string> tickerList = testList.ToList();
             return tickerList;
         }
