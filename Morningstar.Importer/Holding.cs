@@ -157,6 +157,22 @@ namespace Morningstar.Importer
             }
             return result;
         }
+
+        /// <summary>
+        ///     Purpose: return a bool indicating if the Ticker property of a
+        ///         Holding is "empty," where the string is a hyphen (dash), -.
+        /// </summary>
+        /// <returns></returns>
+        public bool HasTicker()
+        {
+            bool result;
+            return result = !(this.Ticker == "-");
+            /*if (!result)
+            {
+                WriteLine(@"The following holding has an "" empty ticker.");
+                this.PrintHoldingData();
+            }*/
+        }
     }
 
 }

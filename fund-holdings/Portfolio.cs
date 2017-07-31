@@ -19,7 +19,7 @@ namespace fund_holdings
         // the fund
         Dictionary<string, List<Holding>> fundDictionary { get; set; }
 
-        public Portfolio (List<string> tickerList)
+        public Portfolio (List<string> fundTickerList)
         {
             const string FILE_REPO = @"\Users\norm\Dropbox\" +
             @"windows-manitowoc\Source\Repos\fund-holdings\fund-holdings\" +
@@ -28,11 +28,17 @@ namespace fund_holdings
             Dictionary<string, List<Holding>> tempDict = new Dictionary<string,
                 List<Holding>>();
 
-            foreach (string ticker in tickerList)
+            /*
+             *  Loop through all the funds in the list of fund tickers.
+             *  Import the file. Filter out all holdings that are not equities
+             *  or do not have a ticker symbol.
+             */
+            foreach (string ticker in fundTickerList)
             {
                 List<Holding> rawList = Morningstar.Importer.FundFileImporter.
                     Import(FILE_REPO, ticker);
-                List<Holding> equityList = rawList.Where(x => x.IsEquityHolding()).ToList();
+                List<Holding> equityList = rawList.Where(x => (x.IsEquityHolding() && 
+                x.HasTicker())).ToList();
                 tempDict[ticker] = equityList;
             }
             fundDictionary = tempDict;
