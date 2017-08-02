@@ -53,11 +53,17 @@ namespace fund_holdings
         /// <param name="fundTicker_2">
         ///     fundTicker_2: The ticker for the second fund
         /// </param>
-        /// <remarks>
-        ///     Programmer: N. S. Clerman, 29-Jul-2017
-        /// </remarks>
-        public void FindCommonHoldings(string fundTicker_1, string fundTicker_2)
+        public void FindCommonHoldings(string fundTicker_1, 
+            string fundTicker_2)
         {
+            /*
+             * Programmer: N. S. Clerman, 29-Jul-2017
+             * 
+             * Revisions
+             * =========
+             * 1) N.S. Clerman, 02-Aug-2017: Change the commonHoldings List to
+             *  a List of class Holding. Return this list.
+             */
             if ((fundTicker_1 != fundTicker_2) &&
                 (fundDictionary.Count > 0) &&
                 fundDictionary.ContainsKey(fundTicker_1) &&
@@ -68,9 +74,15 @@ namespace fund_holdings
 
                 List<Holding> hList_1 = fundDictionary[fundTicker_1];
                 List<Holding> hList_2 = fundDictionary[fundTicker_2];
-                List<string> commonHoldings = new List<string>();
+                List<Holding> commonHoldings = new List<Holding>();
                 int knt = 0;
                 int kntCommon = 0;
+
+                // my guess is that there's a Linq function that will
+                // accomplish this in one statement.
+                decimal fundsOverlap = 0.0M;
+                Dictionary<string, decimal> overlapList =
+                    new Dictionary<string, decimal>();
                 foreach (Holding h_1 in hList_1)
                 {
                     knt++;
@@ -79,25 +91,33 @@ namespace fund_holdings
                     {
                         if (h_1 == h_2)
                         {
-                            commonHoldings.Add(h_1.Ticker);
+                            commonHoldings.Add(h_1);
+                            decimal holdingOverlap = h_1.ComputerOverlap(h_2);
                             kntCommon++;
+                            overlapList[h_1.Ticker] = holdingOverlap;
                             //WriteLine($"{h_1.Ticker} is also in {fundTicker_2}");
+                            //WriteLine($"Their overlap is {holdingOverlap}");
+                            fundsOverlap += holdingOverlap;
                         }
                     }
                 }
                 WriteLine($"Found {kntCommon} common holdings.");
+                string ticker;
                 if (kntCommon > 0)
                 {
                     for (int iCnt = 0; iCnt < commonHoldings.Count(); iCnt++)
                     {
-                        WriteLine($"{iCnt}) {commonHoldings[iCnt]}");
+                        ticker = commonHoldings[iCnt].Ticker;
+                        WriteLine($"{iCnt + 1}) {ticker}: {overlapList[ticker]}");
                     }
+                    WriteLine($"Their total overlap is {fundsOverlap}");
                     ReadLine();
                 }
                 else
                 {
                     WriteLine();
                 }
+                overlapList.Clear();
             }
         }
 

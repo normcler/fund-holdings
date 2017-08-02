@@ -173,6 +173,35 @@ namespace Morningstar.Importer
                 this.PrintHoldingData();
             }*/
         }
+
+        /// <summary>
+        ///     Compute the overlap between two funds that have common holdings.
+        /// </summary>
+        /// <param name="targetHolding"></param>
+        /// <returns>The overlap as a percentage</returns>
+        public decimal ComputerOverlap( Holding targetHolding)
+        {
+            /*
+             * Programmer: N. S. Clerman, 02-Aug-2017
+             */
+            // Verify the holdings are the same.
+            if (this != targetHolding)
+            {
+                return 0.0M;
+            }
+
+            /*
+             * These holdings are in two different funds. The total value of
+             * each fund in the portfolio are assumed identical (imagine each
+             * as $100) when computing the overlap.
+             * 
+             * Therefore, the computation in this case is half the sum of the
+             * two percentages.
+             */
+            decimal overlap;
+            return overlap = 0.5M *(decimal)(this.Weighting +
+                targetHolding.Weighting);
+        }
     }
 
 }
