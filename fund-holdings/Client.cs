@@ -8,7 +8,9 @@ namespace fund_holdings
 {
     class Client
     {
-        public Portfolio fundPortfolio { get; set; }
+        public MorningstarFundHoldingsData 
+            MorningstarFundDataGroup { get; set; }
+        List<PortfolioHolding> portfolio;
 
         /// <summary>
         ///     Constructor: Build a Client object.
@@ -19,11 +21,12 @@ namespace fund_holdings
         public Client()
         {
             List<string> tickerList = getFundTickerList();
-            this.fundPortfolio = new Portfolio(tickerList);
+            this.MorningstarFundDataGroup =
+                new MorningstarFundHoldingsData(tickerList);
 
             // test obtaining the value of a particular field by heading name.
-            this.fundPortfolio.PrintRecord_0("FSEVX");
-            this.fundPortfolio.PrintRecord_0("VTMSX");
+            this.MorningstarFundDataGroup.PrintRecord_0("FSEVX");
+            this.MorningstarFundDataGroup.PrintRecord_0("VTMSX");
         }
 
         /// <summary>

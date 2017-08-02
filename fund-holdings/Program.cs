@@ -38,7 +38,7 @@ namespace fund_holdings
                 for (int kntInner = kntOuter+1; kntInner < numberOfFunds;
                     kntInner++)
                 {
-                    testClient.fundPortfolio.
+                    testClient.MorningstarFundDataGroup.
                         FindCommonHoldings(clientFunds[kntOuter],
                         clientFunds[kntInner]);
                 }

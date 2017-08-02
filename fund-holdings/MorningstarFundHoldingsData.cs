@@ -13,13 +13,13 @@ namespace fund_holdings
     ///     A class containing a Dictionary of funds. The dictionary key is the
     ///     symbol; the value is the list of its holdings (class Holding).
     /// </summary>
-    class Portfolio
+    class MorningstarFundHoldingsData
     {
         // the fund dictionary holds the fund ticker and the holdings list of
         // the fund
         Dictionary<string, List<Holding>> fundDictionary { get; set; }
 
-        public Portfolio (List<string> fundTickerList)
+        public MorningstarFundHoldingsData (List<string> fundTickerList)
         {
             const string FILE_REPO = @"\Users\norm\Dropbox\" +
             @"windows-manitowoc\Source\Repos\fund-holdings\fund-holdings\" +

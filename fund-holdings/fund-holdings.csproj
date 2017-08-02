@@ -50,7 +50,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Client.cs" />
-    <Compile Include="Portfolio.cs" />
+    <Compile Include="MorningstarFundHoldingsData.cs" />
+    <Compile Include="PortfolioHolding.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
