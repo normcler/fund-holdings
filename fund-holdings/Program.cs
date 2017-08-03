@@ -39,18 +39,27 @@ namespace fund_holdings
             StreamWriter textWriter = File.CreateText(filename);
 
             int numberOfFunds = clientFunds.Count();
+            int maxIndex = numberOfFunds - 1;
             decimal[,] overlapMatrix = new decimal[numberOfFunds, numberOfFunds];
-            for (int kntOuter = 0; kntOuter < numberOfFunds; kntOuter++)
+            for (int kntOuter = 0; kntOuter <= maxIndex; kntOuter++)
             {
+                int jDiagonal = kntOuter;
                 textWriter.Write($"{clientFunds[kntOuter]} ");
-                for (int iCol = 0; iCol < kntOuter; iCol++)
+                for (int iRow = 0; iRow < jDiagonal; iRow++)
                 {
                     // write the overlaps up to the diagonal; they are the mirror
                     // of overlaps already computed.
-                    textWriter.Write($"{overlapMatrix[kntOuter,iCol]},");
+                    textWriter.Write($"{overlapMatrix[iRow, kntOuter]},");
                 }
                 // and then the diagonal
-                textWriter.Write(" - ,");
+                if (kntOuter < maxIndex)
+                {
+                    textWriter.Write(" - ,");
+                }
+                else
+                {
+                    textWriter.WriteLine(" - ");
+                }
                 for (int kntInner = kntOuter+1; kntInner < numberOfFunds;
                     kntInner++)
                 {
