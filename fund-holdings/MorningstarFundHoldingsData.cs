@@ -15,16 +15,16 @@ namespace fund_holdings
     /// </summary>
     class MorningstarFundHoldingsData
     {
+        public const string FILE_REPO = @"\Users\norm\Dropbox\" +
+        @"windows-manitowoc\Source\Repos\fund-holdings\fund-holdings\" +
+        @"file_repo\";
+
         // the fund dictionary holds the fund ticker and the holdings list of
         // the fund
         Dictionary<string, List<Holding>> fundDictionary { get; set; }
 
         public MorningstarFundHoldingsData (List<string> fundTickerList)
         {
-            const string FILE_REPO = @"\Users\norm\Dropbox\" +
-            @"windows-manitowoc\Source\Repos\fund-holdings\fund-holdings\" +
-            @"file_repo\";
-
             Dictionary<string, List<Holding>> tempDict = new Dictionary<string,
                 List<Holding>>();
 
@@ -53,7 +53,7 @@ namespace fund_holdings
         /// <param name="fundTicker_2">
         ///     fundTicker_2: The ticker for the second fund
         /// </param>
-        public void FindCommonHoldings(string fundTicker_1, 
+        public decimal FindCommonHoldings(string fundTicker_1, 
             string fundTicker_2)
         {
             /*
@@ -61,9 +61,10 @@ namespace fund_holdings
              * 
              * Revisions
              * =========
-             * 1) N.S. Clerman, 02-Aug-2017: Change the commonHoldings List to
-             *  a List of class Holding. Return this list.
+             *  1) N.S. Clerman, 02-Aug-2017: Change the commonHoldings List to
+             *      a List of class Holding. Write a text file to create an table.
              */
+            decimal fundsOverlap = 0.0M;
             if ((fundTicker_1 != fundTicker_2) &&
                 (fundDictionary.Count > 0) &&
                 fundDictionary.ContainsKey(fundTicker_1) &&
@@ -75,17 +76,19 @@ namespace fund_holdings
                 List<Holding> hList_1 = fundDictionary[fundTicker_1];
                 List<Holding> hList_2 = fundDictionary[fundTicker_2];
                 List<Holding> commonHoldings = new List<Holding>();
-                int knt = 0;
-                int kntCommon = 0;
 
                 // my guess is that there's a Linq function that will
                 // accomplish this in one statement.
-                decimal fundsOverlap = 0.0M;
                 Dictionary<string, decimal> overlapList =
                     new Dictionary<string, decimal>();
+
+                /*
+                 * A nested loop over the all the holdings in all the funds.
+                 */
+                //for (int knt_1 = 0; knt_1 < hList_1.Count; knt_1++)
+                int kntCommon = 0;
                 foreach (Holding h_1 in hList_1)
                 {
-                    knt++;
                     // WriteLine($"{knt}: Searching for " + $"{h_1.Ticker}");
                     foreach (Holding h_2 in hList_2)
                     {
@@ -119,6 +122,7 @@ namespace fund_holdings
                 }
                 overlapList.Clear();
             }
+            return fundsOverlap;
         }
 
         public void PrintRecord_0(string fundTicker)
