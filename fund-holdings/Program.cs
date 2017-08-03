@@ -41,25 +41,37 @@ namespace fund_holdings
             int numberOfFunds = clientFunds.Count();
             int maxIndex = numberOfFunds - 1;
             decimal[,] overlapMatrix = new decimal[numberOfFunds, numberOfFunds];
+            // write the header
+            textWriter.WriteLine("<thead>");
+            textWriter.WriteLine("  <tr>");
+            for (int jFund = 0; jFund < numberOfFunds; jFund++)
+            {
+                textWriter.WriteLine($"    <th>{clientFunds[jFund]}</th>");
+            }
+            textWriter.WriteLine("  </tr>");
+            textWriter.WriteLine("</thead>");
+            textWriter.WriteLine("<tbody>");
+
             for (int kntOuter = 0; kntOuter <= maxIndex; kntOuter++)
             {
+                textWriter.WriteLine("  <tr>");
                 int jDiagonal = kntOuter;
-                textWriter.Write($"{clientFunds[kntOuter]} ");
+                textWriter.WriteLine($"    s<td>{clientFunds[kntOuter]}</td>");
                 for (int iRow = 0; iRow < jDiagonal; iRow++)
                 {
                     // write the overlaps up to the diagonal; they are the mirror
                     // of overlaps already computed.
-                    textWriter.Write($"{overlapMatrix[iRow, kntOuter]},");
+                    textWriter.WriteLine($"    <td>{overlapMatrix[iRow, kntOuter]}</td>");
                 }
                 // and then the diagonal
-                if (kntOuter < maxIndex)
-                {
-                    textWriter.Write(" - ,");
-                }
-                else
-                {
-                    textWriter.WriteLine(" - ");
-                }
+                //if (kntOuter < maxIndex)
+                //{
+                //textWriter.Write("    <td> - </td>");
+                //}
+                //else
+                //{
+                    textWriter.WriteLine("    <td> - </td>");
+                //}
                 for (int kntInner = kntOuter+1; kntInner < numberOfFunds;
                     kntInner++)
                 {
@@ -72,17 +84,19 @@ namespace fund_holdings
                 }
                 for (int iCol = kntOuter+1; iCol < numberOfFunds; iCol++)
                 {
-                    if (iCol < numberOfFunds-1)
-                    {
-                        textWriter.Write($"{overlapMatrix[kntOuter, iCol]},");
-                    }
-                    else
-                    {
+                    //if (iCol < numberOfFunds-1)
+                    //{
+                        //textWriter.Write($"{overlapMatrix[kntOuter, iCol]},");
+                    //}
+                    //else
+                    //{
                         textWriter.
-                            WriteLine($"{overlapMatrix[kntOuter, iCol]}");
-                    }
+                            WriteLine($"    <td>{overlapMatrix[kntOuter, iCol]}</td>");
+                    //}
                 }
+                textWriter.WriteLine("  </tr>");
             }
+            textWriter.WriteLine("</tbody>");
             textWriter.Dispose();
         }
     }
