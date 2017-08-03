@@ -70,8 +70,8 @@ namespace fund_holdings
                 fundDictionary.ContainsKey(fundTicker_1) &&
                 fundDictionary.ContainsKey(fundTicker_2))
             {
-                WriteLine($"Searching funds {fundTicker_1} and " +
-                    $"{fundTicker_2} for common holdings.");
+                //WriteLine($"Searching funds {fundTicker_1} and " +
+                    //$"{fundTicker_2} for common holdings.");
 
                 List<Holding> hList_1 = fundDictionary[fundTicker_1];
                 List<Holding> hList_2 = fundDictionary[fundTicker_2];
@@ -104,21 +104,21 @@ namespace fund_holdings
                         }
                     }
                 }
-                WriteLine($"Found {kntCommon} common holdings.");
+                //WriteLine($"Found {kntCommon} common holdings.");
                 string ticker;
                 if (kntCommon > 0)
                 {
                     for (int iCnt = 0; iCnt < commonHoldings.Count(); iCnt++)
                     {
                         ticker = commonHoldings[iCnt].Ticker;
-                        WriteLine($"{iCnt + 1}) {ticker}: {overlapList[ticker]}");
+                        //WriteLine($"{iCnt + 1}) {ticker}: {overlapList[ticker]}");
                     }
-                    WriteLine($"Their total overlap is {fundsOverlap}");
-                    ReadLine();
+                    //WriteLine($"Their total overlap is {fundsOverlap}");
+                    //ReadLine();
                 }
                 else
                 {
-                    WriteLine();
+                    //WriteLine();
                 }
                 overlapList.Clear();
             }
