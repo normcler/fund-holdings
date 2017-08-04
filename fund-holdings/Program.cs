@@ -19,6 +19,7 @@ namespace fund_holdings
          *  1) N. S. Clerman, 31-Jul-2017: Compare every fund to all other
          *      funds.
          *  2) N. S. Clerman, 02-Aug-2017: Remove unused variable.
+         *  3) N. S. Clerman, 03-Aug-2017: Write the overlap table to a file.
          */
         public const string OVERLAP_FILE_NAME = @"overlap.txt";
 
@@ -39,11 +40,12 @@ namespace fund_holdings
             StreamWriter textWriter = File.CreateText(filename);
 
             int numberOfFunds = clientFunds.Count();
-            int maxIndex = numberOfFunds - 1;
             decimal[,] overlapMatrix = new decimal[numberOfFunds, numberOfFunds];
+
             // write the header
             textWriter.WriteLine("<thead>");
             textWriter.WriteLine("  <tr>");
+            textWriter.WriteLine("    <th></th>");
             for (int jFund = 0; jFund < numberOfFunds; jFund++)
             {
                 textWriter.WriteLine($"    <th>{clientFunds[jFund]}</th>");
@@ -52,6 +54,8 @@ namespace fund_holdings
             textWriter.WriteLine("</thead>");
             textWriter.WriteLine("<tbody>");
 
+            // Outer loop through the list of funds. Each is a row in the table.
+            int maxIndex = numberOfFunds - 1;
             for (int kntOuter = 0; kntOuter <= maxIndex; kntOuter++)
             {
                 textWriter.WriteLine("  <tr>");
@@ -63,36 +67,26 @@ namespace fund_holdings
                     // of overlaps already computed.
                     textWriter.WriteLine($"    <td>{overlapMatrix[iRow, kntOuter]}</td>");
                 }
-                // and then the diagonal
-                //if (kntOuter < maxIndex)
-                //{
-                //textWriter.Write("    <td> - </td>");
-                //}
-                //else
-                //{
-                    textWriter.WriteLine("    <td> - </td>");
-                //}
+                textWriter.WriteLine("    <td> - </td>");
+
+                // Inner loop over funds not yet compared.
                 for (int kntInner = kntOuter+1; kntInner < numberOfFunds;
                     kntInner++)
                 {
+                    // Compute the overlap.
                     overlapMatrix[kntOuter, kntInner] =
                         testClient.MorningstarFundDataGroup.
                         FindCommonHoldings(clientFunds[kntOuter],
                         clientFunds[kntInner]);
-                    // and fill out the row from the column past the diagonal to 
-                    // the end with the newly-computed overlap.
                 }
-                for (int iCol = kntOuter+1; iCol < numberOfFunds; iCol++)
+
+                // Fill out the row from the column past the diagonal to 
+                // the end with the newly-computed overlap.
+                for (int iCol = kntOuter + 1; iCol < numberOfFunds; iCol++)
                 {
-                    //if (iCol < numberOfFunds-1)
-                    //{
-                        //textWriter.Write($"{overlapMatrix[kntOuter, iCol]},");
-                    //}
-                    //else
-                    //{
-                        textWriter.
-                            WriteLine($"    <td>{overlapMatrix[kntOuter, iCol]}</td>");
-                    //}
+                    textWriter.
+                        WriteLine($"    <td>{overlapMatrix[kntOuter, iCol]}" +
+                        $"</td>");
                 }
                 textWriter.WriteLine("  </tr>");
             }
