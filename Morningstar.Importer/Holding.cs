@@ -131,6 +131,11 @@ namespace Morningstar.Importer
             return HaveSameTicker(targetHolding);
         }
 
+        public override int GetHashCode()
+        {
+            return this.Ticker.GetHashCode();
+        }
+
         private bool HaveSameTicker(Holding targetHolding)
         {
             return this.Ticker.ToUpper().Trim() ==

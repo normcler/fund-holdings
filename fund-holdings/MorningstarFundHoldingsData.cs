@@ -23,11 +23,14 @@ namespace fund_holdings
         // the fund
         Dictionary<string, List<Holding>> fundDictionary { get; set; }
 
+        /// <summary>
+        ///     Contructor - build the fundDictionary for each fund in the list.
+        /// </summary>
+        /// <param name="fundTickerList">A List of fund tickers.</param>
         public MorningstarFundHoldingsData (List<string> fundTickerList)
         {
             Dictionary<string, List<Holding>> tempDict = new Dictionary<string,
                 List<Holding>>();
-
             /*
              *  Loop through all the funds in the list of fund tickers.
              *  Import the file. Filter out all holdings that are not equities
@@ -45,7 +48,8 @@ namespace fund_holdings
         }
 
         /// <summary>
-        ///     Purpose: Find the common holdings in two funds in the portfolio.
+        ///     Purpose: Find the common holdings in two funds in the portfolio
+        ///         and return the overlap between the two funds.
         /// </summary>
         /// <param name="fundTicker_1">
         ///     fundTicker_1: The ticker for the first funds
@@ -53,6 +57,9 @@ namespace fund_holdings
         /// <param name="fundTicker_2">
         ///     fundTicker_2: The ticker for the second fund
         /// </param>
+        /// <returns>
+        ///     fundsOverlap: the overlap in holdings between the funds.
+        /// </returns>
         public decimal FindCommonHoldings(string fundTicker_1, 
             string fundTicker_2)
         {
@@ -70,12 +77,14 @@ namespace fund_holdings
                 fundDictionary.ContainsKey(fundTicker_1) &&
                 fundDictionary.ContainsKey(fundTicker_2))
             {
-                //WriteLine($"Searching funds {fundTicker_1} and " +
-                    //$"{fundTicker_2} for common holdings.");
+                WriteLine($"Searching funds {fundTicker_1} and " +
+                    $"{fundTicker_2} for common holdings.");
+                WriteLine();
 
                 List<Holding> hList_1 = fundDictionary[fundTicker_1];
                 List<Holding> hList_2 = fundDictionary[fundTicker_2];
                 List<Holding> commonHoldings = new List<Holding>();
+                List<Holding> trialIntersect = new List<Holding>();
 
                 // my guess is that there's a Linq function that will
                 // accomplish this in one statement.
@@ -87,6 +96,9 @@ namespace fund_holdings
                  */
                 //for (int knt_1 = 0; knt_1 < hList_1.Count; knt_1++)
                 int kntCommon = 0;
+                trialIntersect = (hList_1.Intersect(hList_2)).ToList<Holding>();
+                WriteLine($"trialIntersect has {trialIntersect.Count} elements");
+                ReadLine();
                 foreach (Holding h_1 in hList_1)
                 {
                     // WriteLine($"{knt}: Searching for " + $"{h_1.Ticker}");
@@ -104,7 +116,8 @@ namespace fund_holdings
                         }
                     }
                 }
-                //WriteLine($"Found {kntCommon} common holdings.");
+                WriteLine($"Found {kntCommon} common holdings.");
+                ReadLine();
                 string ticker;
                 if (kntCommon > 0)
                 {
