@@ -99,6 +99,10 @@ namespace fund_holdings
                 trialIntersect = (hList_1.Intersect(hList_2)).ToList<Holding>();
                 WriteLine($"trialIntersect has {trialIntersect.Count} elements");
                 ReadLine();
+
+                /*
+                 * This was my original code. The Linq Intersect method did the 
+                 * computation in one line above.
                 foreach (Holding h_1 in hList_1)
                 {
                     // WriteLine($"{knt}: Searching for " + $"{h_1.Ticker}");
@@ -118,6 +122,7 @@ namespace fund_holdings
                 }
                 WriteLine($"Found {kntCommon} common holdings.");
                 ReadLine();
+                */
                 string ticker;
                 if (kntCommon > 0)
                 {
