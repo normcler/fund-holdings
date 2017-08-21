@@ -13,6 +13,9 @@ namespace fund_holdings
     ///     A class containing a Dictionary of funds. The dictionary key is the
     ///     symbol; the value is the list of its holdings (class Holding).
     /// </summary>
+    /// <remarks>
+    ///     N. S. Clerman, 20-Aug-2017: add fundOverlapList
+    /// </remarks>
     class MorningstarFundHoldingsData
     {
         public const string FILE_REPO = @"\Users\norm\Dropbox\" +
@@ -21,7 +24,11 @@ namespace fund_holdings
 
         // the fund dictionary holds the fund ticker and the holdings list of
         // the fund
-        Dictionary<string, List<Holding>> fundDictionary { get; set; }
+        public Dictionary<string, List<Holding>> FundDictionary { get; set; }
+        internal List<FundOverlap> FundOverlapList { get => fundOverlapList;
+            set => fundOverlapList = value; }
+
+        private List<FundOverlap> fundOverlapList;
 
         /// <summary>
         ///     Contructor - build the fundDictionary for each fund in the list.
@@ -44,7 +51,7 @@ namespace fund_holdings
                 x.HasTicker())).ToList();
                 tempDict[ticker] = equityList;
             }
-            fundDictionary = tempDict;
+            FundDictionary = tempDict;
         }
 
         /// <summary>
@@ -73,18 +80,17 @@ namespace fund_holdings
              */
             decimal fundsOverlap = 0.0M;
             if ((fundTicker_1 != fundTicker_2) &&
-                (fundDictionary.Count > 0) &&
-                fundDictionary.ContainsKey(fundTicker_1) &&
-                fundDictionary.ContainsKey(fundTicker_2))
+                (FundDictionary.Count > 0) &&
+                FundDictionary.ContainsKey(fundTicker_1) &&
+                FundDictionary.ContainsKey(fundTicker_2))
             {
                 WriteLine($"Searching funds {fundTicker_1} and " +
                     $"{fundTicker_2} for common holdings.");
                 WriteLine();
 
-                List<Holding> hList_1 = fundDictionary[fundTicker_1];
-                List<Holding> hList_2 = fundDictionary[fundTicker_2];
+                List<Holding> hList_1 = FundDictionary[fundTicker_1];
+                List<Holding> hList_2 = FundDictionary[fundTicker_2];
                 List<Holding> commonHoldings = new List<Holding>();
-                List<Holding> trialIntersect = new List<Holding>();
 
                 // my guess is that there's a Linq function that will
                 // accomplish this in one statement.
@@ -96,33 +102,10 @@ namespace fund_holdings
                  */
                 //for (int knt_1 = 0; knt_1 < hList_1.Count; knt_1++)
                 int kntCommon = 0;
-                trialIntersect = (hList_1.Intersect(hList_2)).ToList<Holding>();
-                WriteLine($"trialIntersect has {trialIntersect.Count} elements");
+                commonHoldings = (hList_1.Intersect(hList_2)).ToList<Holding>();
+                WriteLine($"trialIntersect has {commonHoldings.Count} elements");
                 ReadLine();
 
-                /*
-                 * This was my original code. The Linq Intersect method did the 
-                 * computation in one line above.
-                foreach (Holding h_1 in hList_1)
-                {
-                    // WriteLine($"{knt}: Searching for " + $"{h_1.Ticker}");
-                    foreach (Holding h_2 in hList_2)
-                    {
-                        if (h_1 == h_2)
-                        {
-                            commonHoldings.Add(h_1);
-                            decimal holdingOverlap = h_1.ComputerOverlap(h_2);
-                            kntCommon++;
-                            overlapList[h_1.Ticker] = holdingOverlap;
-                            //WriteLine($"{h_1.Ticker} is also in {fundTicker_2}");
-                            //WriteLine($"Their overlap is {holdingOverlap}");
-                            fundsOverlap += holdingOverlap;
-                        }
-                    }
-                }
-                WriteLine($"Found {kntCommon} common holdings.");
-                ReadLine();
-                */
                 string ticker;
                 if (kntCommon > 0)
                 {
@@ -145,7 +128,7 @@ namespace fund_holdings
 
         public void PrintRecord_0(string fundTicker)
         {
-            List<Holding> holdingList = this.fundDictionary[fundTicker];
+            List<Holding> holdingList = this.FundDictionary[fundTicker];
             Holding record_0 = holdingList[0];
             record_0.PrintHoldingData();
         }

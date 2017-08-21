@@ -10,7 +10,7 @@ namespace fund_holdings
     {
         public MorningstarFundHoldingsData 
             MorningstarFundDataGroup { get; set; }
-        List<PortfolioHolding> portfolio;
+        public List<PortfolioHolding> Portfolio { get; set; }
 
         /// <summary>
         ///     Constructor: Build a Client object.
@@ -20,7 +20,7 @@ namespace fund_holdings
         /// </remarks>
         public Client()
         {
-            List<string> tickerList = getFundTickerList();
+            List<string> tickerList = GetFundTickerList();
             this.MorningstarFundDataGroup =
                 new MorningstarFundHoldingsData(tickerList);
 
@@ -43,7 +43,7 @@ namespace fund_holdings
         ///     tickers.
         /// </remarks>
 
-        public List<string> getFundTickerList()
+        public List<string> GetFundTickerList()
         {
             string[] testList = { "FSEVX", "VTMSX", "FPMAX", "PRASX", "PRHSX",
             "PRITX", "PRNHX", "VEMAX", "VEUSX", "VFSVX", "VPADX", "VTRIX"};
