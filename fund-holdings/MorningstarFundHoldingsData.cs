@@ -58,17 +58,17 @@ namespace fund_holdings
         ///     Purpose: Find the common holdings in two funds in the portfolio
         ///         and return the overlap between the two funds.
         /// </summary>
-        /// <param name="fundTicker_1">
-        ///     fundTicker_1: The ticker for the first funds
+        /// <param name="fundSymbol_1">
+        ///     fundSymbol_1: The ticker for the first funds
         /// </param>
-        /// <param name="fundTicker_2">
-        ///     fundTicker_2: The ticker for the second fund
+        /// <param name="fundSymbol_2">
+        ///     fundSymbol_2: The ticker for the second fund
         /// </param>
         /// <returns>
         ///     fundsOverlap: the overlap in holdings between the funds.
         /// </returns>
-        public decimal FindCommonHoldings(string fundTicker_1, 
-            string fundTicker_2)
+        public decimal FindCommonHoldings(string fundSymbol_1, 
+            string fundSymbol_2)
         {
             /*
              * Programmer: N. S. Clerman, 29-Jul-2017
@@ -79,17 +79,17 @@ namespace fund_holdings
              *      a List of class Holding. Write a text file to create an table.
              */
             decimal fundsOverlap = 0.0M;
-            if ((fundTicker_1 != fundTicker_2) &&
+            if ((fundSymbol_1 != fundSymbol_2) &&
                 (FundDictionary.Count > 0) &&
-                FundDictionary.ContainsKey(fundTicker_1) &&
-                FundDictionary.ContainsKey(fundTicker_2))
+                FundDictionary.ContainsKey(fundSymbol_1) &&
+                FundDictionary.ContainsKey(fundSymbol_2))
             {
-                WriteLine($"Searching funds {fundTicker_1} and " +
-                    $"{fundTicker_2} for common holdings.");
+                WriteLine($"Searching funds {fundSymbol_1} and " +
+                    $"{fundSymbol_2} for common holdings.");
                 WriteLine();
 
-                List<Holding> hList_1 = FundDictionary[fundTicker_1];
-                List<Holding> hList_2 = FundDictionary[fundTicker_2];
+                List<Holding> hList_1 = FundDictionary[fundSymbol_1];
+                List<Holding> hList_2 = FundDictionary[fundSymbol_2];
                 List<Holding> commonHoldings = new List<Holding>();
 
                 // my guess is that there's a Linq function that will
@@ -101,18 +101,61 @@ namespace fund_holdings
                  * A nested loop over the all the holdings in all the funds.
                  */
                 //for (int knt_1 = 0; knt_1 < hList_1.Count; knt_1++)
+                // I cannot use this. I need to collect some data for each
+                // individual overlap. Also, I need the loop to sum the individual
+                // overlaps. I could use Intersect, but them I would need other,
+                // different loops to compute what I need.
+
+                //commonHoldings = (hList_1.Intersect(hList_2)).ToList<Holding>();
+                //WriteLine($"trialIntersect has {commonHoldings.Count} elements");
+
+                /*
+                 * A nested loop over the all the holdings in all the funds.
+                                */
+                //for (int knt_1 = 0; knt_1 < hList_1.Count; knt_1++)
                 int kntCommon = 0;
-                commonHoldings = (hList_1.Intersect(hList_2)).ToList<Holding>();
-                WriteLine($"trialIntersect has {commonHoldings.Count} elements");
+                FundsOverlapTable overlapTable =
+                new FundsOverlapTable(fundSymbol_1, fundSymbol_2);
+                foreach (Holding h_1 in hList_1)
+                {
+                    // WriteLine($"{knt}: Searching for " + $"{h_1.Ticker}");
+                    foreach (Holding h_2 in hList_2)
+                    {
+                        if (h_1 == h_2)
+                        {
+                            commonHoldings.Add(h_1);
+                            decimal currentOverlap = h_1.ComputerOverlap(h_2);
+                            kntCommon++;
+                            // Code for creating overlap table.
+                            //overlapList[h_1.Ticker] = currentOverlap;
+                            //HoldingOverlap holdingOverlap =
+                            //    new HoldingOverlap(ticker: h_1.Ticker,
+                            //    name: h_1.Name,
+                            //    overlap: currentOverlap);
+                            //overlapTable.OverlapList.Add(holdingOverlap);
+                            //WriteLine($"{h_1.Ticker} is also in {fundTicker_2}");
+                            //WriteLine($"Their overlap is {holdingOverlap}");
+                            fundsOverlap += currentOverlap;
+                        }
+                    }
+                }
+
+                //if (kntCommon > 0)
+                //{
+                //    overlapTable.PrintTable();
+                //    ReadLine();
+                //}
+
+                WriteLine($"{fundSymbol_1} and {fundSymbol_2} have " +
+                    $"{commonHoldings.Count} common holdings");
                 ReadLine();
 
                 string ticker;
-                if (kntCommon > 0)
+                if (commonHoldings.Count() > 0)
                 {
                     for (int iCnt = 0; iCnt < commonHoldings.Count(); iCnt++)
                     {
                         ticker = commonHoldings[iCnt].Ticker;
-                        //WriteLine($"{iCnt + 1}) {ticker}: {overlapList[ticker]}");
                     }
                     //WriteLine($"Their total overlap is {fundsOverlap}");
                     //ReadLine();

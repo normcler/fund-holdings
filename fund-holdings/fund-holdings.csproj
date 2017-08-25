@@ -54,6 +54,8 @@
   <ItemGroup>
     <Compile Include="Client.cs" />
     <Compile Include="FundOverlap.cs" />
+    <Compile Include="FundsOverlapTable.cs" />
+    <Compile Include="HoldingOverlap.cs" />
     <Compile Include="MorningstarFundHoldingsData.cs" />
     <Compile Include="PortfolioHolding.cs" />
     <Compile Include="Program.cs" />

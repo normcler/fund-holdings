@@ -36,7 +36,7 @@ namespace Morningstar.Importer
             List<Holding> result = new List<Holding>();
 
             // get the fully-qualified file name.
-            string filename = fullyQualifiedFileName(repoLocation, ticker);
+            string filename = FullyQualifiedFileName(repoLocation, ticker);
 
             using (StreamReader reader = File.OpenText(filename))
             {
@@ -72,7 +72,7 @@ namespace Morningstar.Importer
         /// <remarks>
         ///     Programmer: N. S. Clerman
         /// </remarks>
-        private static string fullyQualifiedFileName(string repoLocation,
+        private static string FullyQualifiedFileName(string repoLocation,
             string ticker)
         {
 
