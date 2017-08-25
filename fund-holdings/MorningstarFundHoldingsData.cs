@@ -94,7 +94,7 @@ namespace fund_holdings
 
                 // my guess is that there's a Linq function that will
                 // accomplish this in one statement.
-                Dictionary<string, decimal> overlapList =
+                Dictionary<string, decimal> localOverlapList =
                     new Dictionary<string, decimal>();
 
                 /*
@@ -115,7 +115,7 @@ namespace fund_holdings
                 //for (int knt_1 = 0; knt_1 < hList_1.Count; knt_1++)
                 int kntCommon = 0;
                 FundsOverlapTable overlapTable =
-                new FundsOverlapTable(fundSymbol_1, fundSymbol_2);
+                    new FundsOverlapTable(fundSymbol_1, fundSymbol_2);
                 foreach (Holding h_1 in hList_1)
                 {
                     // WriteLine($"{knt}: Searching for " + $"{h_1.Ticker}");
@@ -127,44 +127,46 @@ namespace fund_holdings
                             decimal currentOverlap = h_1.ComputerOverlap(h_2);
                             kntCommon++;
                             // Code for creating overlap table.
-                            overlapList[h_1.Ticker] = currentOverlap;
-                            //HoldingOverlap holdingOverlap =
-                            //    new HoldingOverlap(ticker: h_1.Ticker,
-                            //    name: h_1.Name,
-                            //    overlap: currentOverlap);
-                            //overlapTable.OverlapList.Add(holdingOverlap);
+                            localOverlapList[h_1.Ticker] = currentOverlap;
+
+
+                            HoldingOverlap holdingOverlap =
+                                new HoldingOverlap(ticker: h_1.Ticker,
+                                name: h_1.Name,
+                                overlap: currentOverlap);
+                            overlapTable.OverlapList.Add(holdingOverlap);
                             //WriteLine($"{h_1.Ticker} is also in {fundTicker_2}");
                             //WriteLine($"Their overlap is {holdingOverlap}");
+
                             fundsOverlap += currentOverlap;
                         }
                     }
                 }
 
-                //if (kntCommon > 0)
-                //{
-                //    overlapTable.PrintTable();
-                //    ReadLine();
-                //}
+                if (kntCommon > 0)
+                {
+                    overlapTable.PrintTable();
+                    ReadLine();
+                }
 
                 WriteLine($"{fundSymbol_1} and {fundSymbol_2} have " +
                     $"{commonHoldings.Count} common holdings");
+                WriteLine($"Their total overlap is {fundsOverlap}");
                 ReadLine();
 
-                string ticker;
-                if (commonHoldings.Count() > 0)
-                {
-                    for (int iCnt = 0; iCnt < commonHoldings.Count(); iCnt++)
-                    {
-                        ticker = commonHoldings[iCnt].Ticker;
-                    }
-                    //WriteLine($"Their total overlap is {fundsOverlap}");
-                    //ReadLine();
-                }
-                else
-                {
-                    //WriteLine();
-                }
-                overlapList.Clear();
+                //string ticker;
+                //if (commonHoldings.Count() > 0)
+                //{
+                //    for (int iCnt = 0; iCnt < commonHoldings.Count(); iCnt++)
+                //    {
+                //        ticker = commonHoldings[iCnt].Ticker;
+                //    }
+                //}
+                //else
+                //{
+                //    //WriteLine();
+                //}
+                localOverlapList.Clear();
             }
             return fundsOverlap;
         }

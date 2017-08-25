@@ -27,6 +27,7 @@ namespace fund_holdings
         {
             FundSymbol_1 = symbol_1;
             FundSymbol_2 = symbol_2;
+            OverlapList = new List<HoldingOverlap>();
         }
 
         public void PrintTable()
