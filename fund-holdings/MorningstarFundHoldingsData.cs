@@ -48,6 +48,27 @@ namespace fund_holdings
             FundDictionary = tempDict;
         }
 
+        public static void BuildFundDictionary(List<string> portfolioSymbolList)
+        {
+            Dictionary<string, List<Holding>> tempDict = new Dictionary<string,
+               List<Holding>>();
+            /*
+             *  Loop through all the funds in the list of fund tickers.
+             *  Import the file. Filter out all holdings that are not equities
+             *  or do not have a ticker symbol.
+             */
+            foreach (string symbol in portfolioSymbolList)
+            {
+                List<Holding> rawList = Morningstar.Importer.FundFileImporter.
+                    Import(FILE_REPO, symbol);
+                List<Holding> equityList =
+                    rawList.Where(x => (x.IsEquityHolding() &&
+                    x.HasTicker())).ToList();
+                tempDict[symbol] = equityList;
+            }
+            FundDictionary = tempDict;
+        }
+
         /// <summary>
         ///     Purpose: Find the common holdings in two funds in the portfolio
         ///         and return the overlap between the two funds.
