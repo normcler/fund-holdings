@@ -28,8 +28,8 @@ namespace fund_holdings
                 new MorningstarFundHoldingsData(tickerList);
 
             // test obtaining the value of a particular field by heading name.
-            this.MorningstarFundDataGroup.PrintRecord_0("FSEVX");
-            this.MorningstarFundDataGroup.PrintRecord_0("VTMSX");
+            MorningstarFundHoldingsData.PrintRecord_0("FSEVX");
+            MorningstarFundHoldingsData.PrintRecord_0("VTMSX");
         }
 
         /// <summary>

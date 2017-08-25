@@ -61,7 +61,7 @@ namespace fund_holdings
         /// <returns>
         ///     fundsOverlap: the overlap in holdings between the funds.
         /// </returns>
-        public decimal ComputeTotalOverap(string fundSymbol_1, 
+        public decimal ComputeTotalOverlap(string fundSymbol_1, 
             string fundSymbol_2)
         {
             /*
@@ -152,7 +152,40 @@ namespace fund_holdings
             return fundsOverlap;
         }
 
-        public void PrintRecord_0(string fundTicker)
+        public static FundsOverlapTable
+            BuildFundsOverlapTable(string fundSymbol_1, string fundSymbol_2)
+        {
+            FundsOverlapTable overlapTable = new FundsOverlapTable();
+            if ((fundSymbol_1 != fundSymbol_2) &&
+                (FundDictionary.Count > 0) &&
+                FundDictionary.ContainsKey(fundSymbol_1) &&
+                FundDictionary.ContainsKey(fundSymbol_2))
+            {
+                List<Holding> hList_1 = FundDictionary[fundSymbol_1];
+                List<Holding> hList_2 = FundDictionary[fundSymbol_2];
+
+                foreach (Holding h_1 in hList_1)
+                {
+                    foreach (Holding h_2 in hList_2)
+                    {
+                        if (h_1 == h_2)
+                        {
+                            decimal currentOverlap = h_1.ComputerOverlap(h_2);
+                            // Code for creating overlap table.
+
+                            HoldingOverlap holdingOverlap =
+                                new HoldingOverlap(ticker: h_1.Ticker,
+                                name: h_1.Name,
+                                overlap: currentOverlap);
+                            overlapTable.OverlapList.Add(holdingOverlap);
+                        }
+                    }
+                }
+            }
+            return overlapTable;
+        }
+
+        public static void PrintRecord_0(string fundTicker)
         {
             List<Holding> holdingList = FundDictionary[fundTicker];
             Holding record_0 = holdingList[0];
