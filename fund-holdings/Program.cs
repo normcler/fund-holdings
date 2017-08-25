@@ -76,7 +76,7 @@ namespace fund_holdings
                     // Compute the overlap.
                     overlapMatrix[kntOuter, kntInner] =
                         testClient.MorningstarFundDataGroup.
-                        FindCommonHoldings(clientFunds[kntOuter],
+                        ComputeTotalOverap(clientFunds[kntOuter],
                         clientFunds[kntInner]);
                 }
 

@@ -9,21 +9,21 @@ namespace fund_holdings
     /// <summary>
     ///     A class that holds one data point in the overlap table matrix.
     /// </summary>
-    class FundOverlap
+    class FundOverlapCell
     {
-        public string Fund_1Ticker { get; set; }
-        public string Fund_2Ticker { get; set; }
+        public string SymbolFund_1 { get; set; }
+        public string SymbolFund_2 { get; set; }
         public decimal Overlap { get; set; }
 
-        public FundOverlap()
+        public FundOverlapCell()
         {
         }
 
-        public FundOverlap(string fundTicker1, string fundTicker2,
+        public FundOverlapCell(string fundSymbol_1, string fundSymbol_2,
             decimal overlap)
         {
-            this.Fund_1Ticker = fundTicker1;
-            this.Fund_2Ticker = fundTicker2;
+            this.SymbolFund_1 = fundSymbol_1;
+            this.SymbolFund_2 = fundSymbol_2;
             Overlap = overlap;
         }
     }

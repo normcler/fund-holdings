@@ -6,9 +6,12 @@ using System.Threading.Tasks;
 
 namespace fund_holdings
 {
+    /// <summary>
+    ///     A single holding (fund) in a portfolio.
+    /// </summary>
     class PortfolioHolding
     {
-        public string Ticker { get; set; }
+        public string Symbol { get; set; }
         public int NumberOfShares { get; set; }
     }
 }

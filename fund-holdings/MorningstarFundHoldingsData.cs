@@ -25,10 +25,10 @@ namespace fund_holdings
         // the fund dictionary holds the fund ticker and the holdings list of
         // the fund
         public Dictionary<string, List<Holding>> FundDictionary { get; set; }
-        internal List<FundOverlap> FundOverlapList { get => fundOverlapList;
+        internal List<FundOverlapCell> FundOverlapList { get => fundOverlapList;
             set => fundOverlapList = value; }
 
-        private List<FundOverlap> fundOverlapList;
+        private List<FundOverlapCell> fundOverlapList;
 
         /// <summary>
         ///     Contructor - build the fundDictionary for each fund in the list.
@@ -67,7 +67,7 @@ namespace fund_holdings
         /// <returns>
         ///     fundsOverlap: the overlap in holdings between the funds.
         /// </returns>
-        public decimal FindCommonHoldings(string fundSymbol_1, 
+        public decimal ComputeTotalOverap(string fundSymbol_1, 
             string fundSymbol_2)
         {
             /*
@@ -153,19 +153,6 @@ namespace fund_holdings
                     $"{commonHoldings.Count} common holdings");
                 WriteLine($"Their total overlap is {fundsOverlap}");
                 ReadLine();
-
-                //string ticker;
-                //if (commonHoldings.Count() > 0)
-                //{
-                //    for (int iCnt = 0; iCnt < commonHoldings.Count(); iCnt++)
-                //    {
-                //        ticker = commonHoldings[iCnt].Ticker;
-                //    }
-                //}
-                //else
-                //{
-                //    //WriteLine();
-                //}
                 localOverlapList.Clear();
             }
             return fundsOverlap;

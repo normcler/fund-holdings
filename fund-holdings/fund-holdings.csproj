@@ -53,7 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Client.cs" />
-    <Compile Include="FundOverlap.cs" />
+    <Compile Include="FundOverlapCell.cs" />
     <Compile Include="FundsOverlapTable.cs" />
     <Compile Include="HoldingOverlap.cs" />
     <Compile Include="MorningstarFundHoldingsData.cs" />

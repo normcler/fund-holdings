@@ -7,6 +7,11 @@ using static System.Console;
 
 namespace fund_holdings
 {
+    /// <summary>
+    ///     A class containing the symbols of two funds and a List of class
+    ///     HoldingOverlap. These are the holdings of the two funds that are
+    ///     held by each.
+    /// </summary>
     public class FundsOverlapTable
     {
         public string FundSymbol_1;
@@ -33,7 +38,7 @@ namespace fund_holdings
         public void PrintTable()
         {
             WriteLine($" Overlap Table for funds {this.FundSymbol_1}" +
-                $"and {this.FundSymbol_1}");
+                $" and {this.FundSymbol_2}");
             WriteLine("TICKER NAME                 OVERLAP");
 
             foreach (HoldingOverlap h in this.OverlapList)
