@@ -108,11 +108,8 @@ namespace fund_holdings
                                 */
                 //for (int knt_1 = 0; knt_1 < hList_1.Count; knt_1++)
                 int kntCommon = 0;
-                FundsOverlapTable overlapTable =
-                    new FundsOverlapTable(fundSymbol_1, fundSymbol_2);
                 foreach (Holding h_1 in hList_1)
                 {
-                    // WriteLine($"{knt}: Searching for " + $"{h_1.Ticker}");
                     foreach (Holding h_2 in hList_2)
                     {
                         if (h_1 == h_2)
@@ -120,27 +117,10 @@ namespace fund_holdings
                             commonHoldings.Add(h_1);
                             decimal currentOverlap = h_1.ComputerOverlap(h_2);
                             kntCommon++;
-                            // Code for creating overlap table.
                             localOverlapList[h_1.Ticker] = currentOverlap;
-
-
-                            HoldingOverlap holdingOverlap =
-                                new HoldingOverlap(ticker: h_1.Ticker,
-                                name: h_1.Name,
-                                overlap: currentOverlap);
-                            overlapTable.OverlapList.Add(holdingOverlap);
-                            //WriteLine($"{h_1.Ticker} is also in {fundTicker_2}");
-                            //WriteLine($"Their overlap is {holdingOverlap}");
-
                             fundsOverlap += currentOverlap;
                         }
                     }
-                }
-
-                if (kntCommon > 0)
-                {
-                    overlapTable.PrintTable();
-                    ReadLine();
                 }
 
                 WriteLine($"{fundSymbol_1} and {fundSymbol_2} have " +
