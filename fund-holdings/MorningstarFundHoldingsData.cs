@@ -127,7 +127,7 @@ namespace fund_holdings
                             decimal currentOverlap = h_1.ComputerOverlap(h_2);
                             kntCommon++;
                             // Code for creating overlap table.
-                            //overlapList[h_1.Ticker] = currentOverlap;
+                            overlapList[h_1.Ticker] = currentOverlap;
                             //HoldingOverlap holdingOverlap =
                             //    new HoldingOverlap(ticker: h_1.Ticker,
                             //    name: h_1.Name,
