@@ -13,9 +13,6 @@ namespace fund_holdings
     ///     A class containing a Dictionary of funds. The dictionary key is the
     ///     symbol; the value is the list of its holdings (class Holding).
     /// </summary>
-    /// <remarks>
-    ///     N. S. Clerman, 20-Aug-2017: add fundOverlapList
-    /// </remarks>
     class MorningstarFundHoldingsData
     {
         public const string FILE_REPO = @"\Users\norm\Dropbox\" +
@@ -24,17 +21,14 @@ namespace fund_holdings
 
         // the fund dictionary holds the fund ticker and the holdings list of
         // the fund
-        public Dictionary<string, List<Holding>> FundDictionary { get; set; }
-        internal List<FundOverlapCell> FundOverlapList { get => fundOverlapList;
-            set => fundOverlapList = value; }
-
-        private List<FundOverlapCell> fundOverlapList;
+        public static Dictionary<string, List<Holding>>
+            FundDictionary { get; set; }
 
         /// <summary>
         ///     Contructor - build the fundDictionary for each fund in the list.
         /// </summary>
-        /// <param name="fundTickerList">A List of fund tickers.</param>
-        public MorningstarFundHoldingsData (List<string> fundTickerList)
+        /// <param name="portfolioSymbolList">A List of fund tickers.</param>
+        public MorningstarFundHoldingsData (List<string> portfolioSymbolList)
         {
             Dictionary<string, List<Holding>> tempDict = new Dictionary<string,
                 List<Holding>>();
@@ -43,13 +37,13 @@ namespace fund_holdings
              *  Import the file. Filter out all holdings that are not equities
              *  or do not have a ticker symbol.
              */
-            foreach (string ticker in fundTickerList)
+            foreach (string symbol in portfolioSymbolList)
             {
                 List<Holding> rawList = Morningstar.Importer.FundFileImporter.
-                    Import(FILE_REPO, ticker);
+                    Import(FILE_REPO, symbol);
                 List<Holding> equityList = rawList.Where(x => (x.IsEquityHolding() && 
                 x.HasTicker())).ToList();
-                tempDict[ticker] = equityList;
+                tempDict[symbol] = equityList;
             }
             FundDictionary = tempDict;
         }
@@ -160,7 +154,7 @@ namespace fund_holdings
 
         public void PrintRecord_0(string fundTicker)
         {
-            List<Holding> holdingList = this.FundDictionary[fundTicker];
+            List<Holding> holdingList = FundDictionary[fundTicker];
             Holding record_0 = holdingList[0];
             record_0.PrintHoldingData();
         }

@@ -32,7 +32,7 @@ namespace fund_holdings
         public static void Main(string[] args)
         {
             Client testClient = new Client();
-            List<string> clientFunds = testClient.GetFundTickerList();
+            List<string> clientFunds = testClient.GetFundSymbolList();
 
             // Open a file to write to in the FILE_REPO directory
             string filename = MorningstarFundHoldingsData.FILE_REPO +

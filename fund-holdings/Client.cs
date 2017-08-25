@@ -10,6 +10,9 @@ namespace fund_holdings
     {
         public MorningstarFundHoldingsData 
             MorningstarFundDataGroup { get; set; }
+
+        // Portfolio - A list of fund holdings in a portfolio. Each entry is 
+        // the fund symbol and the number of shares.
         public List<PortfolioHolding> Portfolio { get; set; }
 
         /// <summary>
@@ -20,7 +23,7 @@ namespace fund_holdings
         /// </remarks>
         public Client()
         {
-            List<string> tickerList = GetFundTickerList();
+            List<string> tickerList = GetFundSymbolList();
             this.MorningstarFundDataGroup =
                 new MorningstarFundHoldingsData(tickerList);
 
@@ -43,7 +46,7 @@ namespace fund_holdings
         ///     tickers.
         /// </remarks>
 
-        public List<string> GetFundTickerList()
+        public List<string> GetFundSymbolList()
         {
             string[] testList = { "FSEVX", "VTMSX", "FPMAX", "PRASX", "PRHSX",
             "PRITX", "PRNHX", "VEMAX", "VEUSX", "VFSVX", "VPADX", "VTRIX"};
