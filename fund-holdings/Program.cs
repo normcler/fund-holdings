@@ -74,10 +74,14 @@ namespace fund_holdings
                     kntInner++)
                 {
                     // Compute the overlap.
+                    //overlapMatrix[kntOuter, kntInner] =
+                    //    testClient.MorningstarFundDataGroup.
+                    //    ComputeTotalOverlap(clientFunds[kntOuter],
+                    //    clientFunds[kntInner]);
                     overlapMatrix[kntOuter, kntInner] =
-                        testClient.MorningstarFundDataGroup.
+                        MorningstarFundHoldingsData.
                         ComputeTotalOverlap(clientFunds[kntOuter],
-                        clientFunds[kntInner]);
+                                            clientFunds[kntInner]);
                 }
 
                 // Fill out the row from the column past the diagonal to 

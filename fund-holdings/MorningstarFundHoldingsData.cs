@@ -82,7 +82,7 @@ namespace fund_holdings
         /// <returns>
         ///     fundsOverlap: the overlap in holdings between the funds.
         /// </returns>
-        public decimal ComputeTotalOverlap(string fundSymbol_1, 
+        public static decimal ComputeTotalOverlap(string fundSymbol_1, 
             string fundSymbol_2)
         {
             /*
@@ -149,6 +149,14 @@ namespace fund_holdings
                 WriteLine($"Their total overlap is {fundsOverlap}");
                 ReadLine();
                 localOverlapList.Clear();
+
+                if (commonHoldings.Count > 5)
+                {
+                    FundsOverlapTable tempTable = 
+                        MorningstarFundHoldingsData.
+                        BuildFundsOverlapTable(fundSymbol_1, fundSymbol_2);
+                    tempTable.PrintTable();
+                }
             }
             return fundsOverlap;
         }
@@ -164,6 +172,9 @@ namespace fund_holdings
             {
                 List<Holding> hList_1 = FundDictionary[fundSymbol_1];
                 List<Holding> hList_2 = FundDictionary[fundSymbol_2];
+
+                overlapTable.FundSymbol_1 = fundSymbol_1;
+                overlapTable.FundSymbol_2 = fundSymbol_1;
 
                 foreach (Holding h_1 in hList_1)
                 {

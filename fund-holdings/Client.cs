@@ -8,8 +8,8 @@ namespace fund_holdings
 {
     class Client
     {
-        public MorningstarFundHoldingsData 
-            MorningstarFundDataGroup { get; set; }
+        //public MorningstarFundHoldingsData 
+            //MorningstarFundDataGroup { get; set; }
 
         // Portfolio - A list of fund holdings in a portfolio. Each entry is 
         // the fund symbol and the number of shares.
@@ -24,8 +24,9 @@ namespace fund_holdings
         public Client()
         {
             List<string> tickerList = GetFundSymbolList();
-            this.MorningstarFundDataGroup =
-                new MorningstarFundHoldingsData(tickerList);
+            MorningstarFundHoldingsData.BuildFundDictionary(tickerList);
+            //this.MorningstarFundDataGroup =
+            //    new MorningstarFundHoldingsData(tickerList);
 
             // test obtaining the value of a particular field by heading name.
             MorningstarFundHoldingsData.PrintRecord_0("FSEVX");
